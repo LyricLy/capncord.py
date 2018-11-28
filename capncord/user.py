@@ -26,5 +26,12 @@ class User:
         await self.update()
         return self._messages_sent
 
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+        return self.id == other.id
+
     def __str__(self):
-        return self.name
+        if self._name:
+            return self._name
+        return repr(self)

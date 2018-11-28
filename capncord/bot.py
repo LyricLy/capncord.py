@@ -45,7 +45,7 @@ class Bot:
             await self.trigger_event("message", Message.from_data(self, msg))
 
     def get_channel(self, id):
-        return Channel(id)
+        return Channel(self, id)
 
     async def history(self):
         resp = await get(self.session, "/serial_chat")
