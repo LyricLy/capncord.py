@@ -6,8 +6,9 @@ import datetime
 
 
 class Message:
-    def __init__(self, channel, id, author, content, created_at):
-        self.id = id
+
+    def __init__(self, channel, id_, author, content, created_at):
+        self.id = id_
         self.content = content
         self.channel = channel
         self.author = author

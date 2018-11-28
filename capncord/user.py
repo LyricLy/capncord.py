@@ -2,9 +2,10 @@ from .http import post
 
 
 class User:
-    def __init__(self, bot, id):
+
+    def __init__(self, bot, id_):
         self.bot = bot
-        self.id = id
+        self.id = id_
         self._name = None
         self._messages_sent = None
 

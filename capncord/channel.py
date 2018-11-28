@@ -5,9 +5,10 @@ from .user import User
 
 
 class Channel:
-    def __init__(self, bot, id):
+
+    def __init__(self, bot, id_):
         self.bot = bot
-        self.id = id
+        self.id = id_
 
     async def send(self, content):
         await post(self.bot.session, "/chat", data={"text": content, "channel": self.id})

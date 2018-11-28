@@ -44,16 +44,16 @@ class Bot:
             msg = json.loads(await self.ws.recv())
             await self.trigger_event("message", Message.from_data(self, msg))
 
-    def get_channel(self, id):
-        return Channel(self, id)
+    def get_channel(self, id_):
+        return Channel(self, id_)
 
     async def history(self):
         resp = await get(self.session, "/serial_chat")
         data = await resp.json()
         return [Message.from_data(self, msg) for msg in data]
 
-    async def get_message(self, id):
-        resp = await post(self.session, "/get_message", data={"id": id})
+    async def get_message(self, id_):
+        resp = await post(self.session, "/get_message", data={"id": id_})
         data = await resp.json()
         return Message.from_data(self, data)
 
