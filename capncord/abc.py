@@ -1,3 +1,5 @@
+from .message import Message
+
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -12,4 +14,8 @@ class Messageable(ABC):
 
     @abstractmethod
     async def history(self) -> List[Message]:
+        pass
+
+    @abstractmethod
+    async def get_message(self, id: int) -> Message:
         pass

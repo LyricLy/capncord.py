@@ -1,17 +1,23 @@
-from ._utils import route
+from .http import get, post
+from .user import User
+from .message import Message
 
 from .abc import Messageable
 
 
 class OnlyChannel(Messageable):
     async def send(self, content):
-        async with self.bot.session.post(route("/chat"), params={"text": content}) as resp:
-            return Message(content, self)
+        await post(self.bot.session, "/chat", data={"text": content})
 
     async def history(self):
-        async with self.bot.session.get(route("/serial_chat")) as resp:
-            data = await resp.json()
-            return list(map(Message, data))
+        resp = await get(self.bot.session, "/serial_chat")
+        data = await resp.json()
+        return [Message.from_data(msg, self) for msg in data]
+
+    async def get_message(self, id):
+        resp = await post(self.bot.session, "/get_message", data={"id": id})
+        data = await resp.json()
+        return Message.from_data(data, self)
 
     def __hash__(self):
         return 0
