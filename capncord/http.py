@@ -1,7 +1,5 @@
 import asyncio
 
-from contextlib import contextmanager
-
 
 BASE_URL = "https://capnchat.tk"
 
