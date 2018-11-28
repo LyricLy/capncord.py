@@ -1,3 +1,5 @@
+from . import channel
+
 from .user import User
 
 import datetime
@@ -12,6 +14,8 @@ class Message:
         self.created_at = created_at
 
     @classmethod
-    def from_data(cls, data, channel):
-        return cls(channel, data["message_id"], User(channel.bot, data["author_id"]), data["content"],
+    def from_data(cls, bot, data):
+        return cls(channel.Channel(bot, data["channel"]), data["message_id"],
+                   User(bot, data["author_id"]),
+                   data["content"],
                    datetime.datetime.strptime(data["created_at"], "%Y-%m-%d %H:%M:%S.%f"))

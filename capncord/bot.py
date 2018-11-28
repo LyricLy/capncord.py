@@ -1,6 +1,5 @@
-from .abc import Messageable
-from .channel import OnlyChannel
-from .http import get
+from .channel import Channel
+from .http import get, post
 from .user import User
 from .message import Message
 
@@ -13,22 +12,13 @@ import aiohttp
 import websockets
 
 
-class Bot(Messageable):
+class Bot:
     def __init__(self):
         self.loop = asyncio.get_event_loop()
         self.session = None
         self.user = None
         self.listeners = {"message": [self.on_message], "ready": [self.on_ready]}
         self.lengths = defaultdict(int)
-
-    async def send(self, *args, **kwargs):
-        await OnlyChannel(self).send(*args, **kwargs)
-
-    async def history(self, *args, **kwargs):
-        return await OnlyChannel(self).history(*args, **kwargs)
-
-    async def get_message(self, *args, **kwargs):
-        return await OnlyChannel(self).get_message(*args, **kwargs)
 
     async def on_message(self, message):
         pass
@@ -52,10 +42,20 @@ class Bot(Messageable):
             await asyncio.sleep(0)
         while True:
             msg = json.loads(await self.ws.recv())
-            await self.trigger_event("message", Message.from_data(msg, OnlyChannel(self)))
+            await self.trigger_event("message", Message.from_data(self, msg))
 
-    def get_all_channels(self):
-        return [OnlyChannel(self)]
+    def get_channel(self, id):
+        return Channel(id)
+
+    async def history(self):
+        resp = await get(self.session, "/serial_chat")
+        data = await resp.json()
+        return [Message.from_data(self, msg) for msg in data]
+
+    async def get_message(self, id):
+        resp = await post(self.session, "/get_message", data={"id": id})
+        data = await resp.json()
+        return Message.from_data(self, data)
 
     async def trigger_event(self, event, *args):
         for listener in self.listeners[event]:

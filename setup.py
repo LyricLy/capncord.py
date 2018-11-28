@@ -10,7 +10,7 @@ with open("README.md") as f:
 setuptools.setup(
     name = "capncord.py",
     packages = setuptools.find_packages(),
-    version = "0.1.0",
+    version = "0.2.0",
     description = "A wrapper for the Capncord API.",
     long_description = long_description,
     long_description_content_type = "text/markdown",

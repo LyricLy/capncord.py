@@ -2,3 +2,6 @@ token.txt
 __pycache__
 dist
 build
+token.txt
+test.py
+capncord.py.egg-info
